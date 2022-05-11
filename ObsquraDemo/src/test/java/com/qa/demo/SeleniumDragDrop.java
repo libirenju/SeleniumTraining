@@ -25,7 +25,11 @@ public class SeleniumDragDrop
 		WebElement srcElement=driver.findElement(By.xpath("//img[@src='images/high_tatras_min.jpg']"));
 		
 		WebElement destElement=driver.findElement(By.id("trash"));
+<<<<<<< HEAD
 		action.dragAndDrop(srcElement, destElement).perform();
+=======
+		action.dragAndDrop(srcElement, destElement);
+>>>>>>> 687b4e30842e6e268604c370be418277cad9be89
 		
 	}
 
