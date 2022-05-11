@@ -8,25 +8,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
-public class SeleniumDragDrop
+public class DragDrop
 {
-
-	public static void main(String[] args) throws InterruptedException
+	public static void main(String[] args)
 	{
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\renph\\eclipse-workspace\\ObsquraDemo\\Drivers\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
-		driver.get("https://www.globalsqa.com/demo-site/draganddrop/");
+		driver.get("https://selenium.obsqurazone.com/drag-drop.php");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-		WebElement iframe=(driver.findElement(By.xpath("//iframe[@class='demo-frame lazyloaded']")));
-		driver.switchTo().frame(iframe);
-		driver.switchTo().defaultContent();
+		
 		Actions action = new Actions(driver);
-		WebElement srcElement=driver.findElement(By.xpath("//img[@src='images/high_tatras_min.jpg']"));
+		WebElement srcElement=driver.findElement(By.xpath("//span[text()='Draggable n°1']"));
 		
-		WebElement destElement=driver.findElement(By.id("trash"));
+		WebElement destElement=driver.findElement(By.id("mydropzone"));
 		action.dragAndDrop(srcElement, destElement).perform();
-		
 	}
-
 }

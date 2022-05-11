@@ -1,11 +1,15 @@
 package com.qa.demo;
 
 import java.time.Duration;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,13 +22,13 @@ public class SeleniumWait
 		WebDriver driver = new ChromeDriver();
 		driver.get("https://groceryapp.uniqassosiates.com/admin");
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));	//implicit wait	(applicable to all)
+		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));	//implicit wait	(applicable to all)
 		
 		driver.findElement(By.name("username")).sendKeys("admin");
 		driver.findElement(By.name("password")).sendKeys("admin");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 		
-		WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));	//explicit wait..particularly for a link  -- initialization is done only once
+		/*WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));	//explicit wait..particularly for a link  -- initialization is done only once
 		 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='Manage Orders']//ancestor::a")));
 		 driver.findElement(By.xpath("//p[text()='Manage Orders']//ancestor::a")).click();
 		 driver.findElement(By.xpath("//a[text()=' Search']//ancestor::a")).click();
@@ -34,7 +38,27 @@ public class SeleniumWait
 		 Select paydrpdwn= new Select(driver.findElement(By.id("pt")));
 			paydrpdwn.selectByVisibleText("COD");
 			driver.findElement(By.xpath("//button[@name='Search']")).click();
-			Thread.sleep(1000);
+			Thread.sleep(1000);*/
+			
+			FluentWait<WebDriver> fluentwait = new FluentWait<WebDriver>(driver)
+				       .withTimeout(Duration.ofSeconds(10))
+				       .pollingEvery(Duration.ofSeconds(10))
+				       .ignoring(NoSuchElementException.class);
+				 
+				WebElement element1 = fluentwait.until(new Function<WebDriver, WebElement>() {
+				public WebElement apply(WebDriver driver) {
+				WebElement element = driver.findElement(By.xpath("//*[@id='softwareTestingMaterial']"));
+				String getTextOnPage = element.getText();
+				if(getTextOnPage.equals("Software Testing Material - DEMO PAGE")){
+				System.out.println(getTextOnPage);
+				return element;
+				}else{
+				System.out.println("FluentWait Failed");
+				return null;
+				}
+				}
+				});
+
 	}
 
 }
